@@ -36,7 +36,7 @@ contract PortifyFarm is Ownable {
     uint256 public constant MAX_LOCK_PERIOD = 365 days;
     uint256 public constant BOOST_BASE = 1000;
     // Number, bigger than BOOST_BASE. If we want to get boost = 1.2x, this should be 1200
-    uint256 public max_boost;
+    uint256 public max_boost = BOOST_BASE;
 
     // Info of each pool.
     struct PoolInfo {
