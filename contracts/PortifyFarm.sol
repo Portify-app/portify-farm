@@ -114,6 +114,8 @@ contract PortifyFarm is Ownable {
     function setTokenRewardPerBlock(uint256 pid, uint256 _rewardTokenPerBlock) external onlyOwner {
         PoolInfo storage pool = poolInfo[pid];
 
+        updatePool(pid);
+
         rewardTokenPerBlock[address(pool.rewardToken)] -= pool.rewardTokenPerBlock;
         rewardTokenPerBlock[address(pool.rewardToken)] += _rewardTokenPerBlock;
 
@@ -166,8 +168,7 @@ contract PortifyFarm is Ownable {
             if (user.lastRewardAt < user.lockUntil) {
                 // user has partially boost
                 uint256 under_lock_interval = user.lockUntil - user.lastRewardAt;
-                uint256 unlocked_interval = block.timestamp - user.lockUntil;
-                uint256 boosted_part = (userBaseReward * under_lock_interval) / (under_lock_interval + unlocked_interval);
+                uint256 boosted_part = (userBaseReward * under_lock_interval) / (block.timestamp - user.lastRewardAt);
                 // boosted part * boost + unmodified part
                 pending = ((boosted_part * user.boost) / BOOST_BASE) + (userBaseReward - boosted_part);
             } else {
@@ -230,7 +231,7 @@ contract PortifyFarm is Ownable {
                 // set lock period + boost based on it
                 user.lockUntil = block.timestamp + new_lock_period;
                 // boost is linearly dependent on lock period
-                user.boost = BOOST_BASE + (((max_boost - BOOST_BASE) * _lock_period) / MAX_LOCK_PERIOD);
+                user.boost = BOOST_BASE + (((max_boost - BOOST_BASE) * new_lock_period) / MAX_LOCK_PERIOD);
             }
 
             // update user deposit amount and stats
