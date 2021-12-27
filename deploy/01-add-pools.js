@@ -1,7 +1,12 @@
 // FILL WITH REAL DATA
+
+const blocks_per_day = 86400 / 3;
+const pfy_per_day = 60000 * 10**9;
+
 const pools = [
-    (1000, '0x67A6E4e876961d4E1AacE8A51391615a1818D01c', '0x5B38Da6a701c568545dCfcB03FcB875f56beddC4'),
-    (2000, '0x5B38Da6a701c568545dCfcB03FcB875f56beddC4', '0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2')
+    // pfy as reward and as a deposit token at the same time
+    // 60k pfy per day
+    [Math.ceil(pfy_per_day / blocks_per_day), '0x69083b64988933e8b4783e8302b9bbf90163280e', '0x69083b64988933e8b4783e8302b9bbf90163280e']
 ]
 
 module.exports = async ({getNamedAccounts, deployments}) => {

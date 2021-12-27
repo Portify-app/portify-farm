@@ -1,5 +1,6 @@
 
-const START_BLOCK = 999999;
+// 2nd jan 2022
+const START_BLOCK = 14013041;
 
 module.exports = async ({getNamedAccounts, deployments}) => {
     const {deployer} = await getNamedAccounts();
